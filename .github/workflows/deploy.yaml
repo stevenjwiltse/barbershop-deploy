@@ -1,0 +1,21 @@
+name: Deploy Frontend
+
+on:
+  workflow_dispatch:  # Manually triggered via GitHub UI
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout deploy repo
+        uses: actions/checkout@v3
+
+      - name: Clone frontend repo
+        run: git clone https://github.com/stevenjwiltse/ui-deploy.git frontend
+
+      - name: Install and build frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
