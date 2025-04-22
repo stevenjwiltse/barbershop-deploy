@@ -1,19 +1,20 @@
 name: Deploy Frontend to EC2
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout deploy repo
+      - name: Checkout deployment repo
         uses: actions/checkout@v3
 
-      - name: Clone frontend
-        run: git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/stevenjwiltse/barbershop-ui.git frontend
-
+      - name: Clone frontend repo
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: git clone https://x-access-token:$GH_TOKEN@github.com/stevenjwiltse/barbershop-ui.git frontend
 
       - name: Build frontend
         run: |
@@ -22,13 +23,13 @@ jobs:
           npm run build
           cd ..
 
-      - name: Build Docker image
+      - name: Build Docker image for frontend + NGINX
         run: docker build -t frontend-app .
 
       - name: Save Docker image to file
         run: docker save frontend-app | gzip > frontend-app.tar.gz
 
-      - name: Copy image to EC2
+      - name: Copy Docker image to EC2
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -37,7 +38,7 @@ jobs:
           source: "frontend-app.tar.gz"
           target: "~/"
 
-      - name: Deploy on EC2
+      - name: Load and Run Docker on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_HOST }}
