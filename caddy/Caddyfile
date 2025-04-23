@@ -1,0 +1,6 @@
+barbershop-app.duckdns.org {
+  root * /srv/frontend-dist
+  file_server
+
+  reverse_proxy /api/* 127.0.0.1:8000
+}
