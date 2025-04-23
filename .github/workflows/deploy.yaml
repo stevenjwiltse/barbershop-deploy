@@ -54,5 +54,5 @@ jobs:
             mkdir ~/frontend-deploy
             tar -xzf deploy-frontend.tar.gz -C ~/frontend-deploy
             cd ~/frontend-deploy
-            docker compose down
-            docker compose up -d --build
+            docker-compose down
+            docker-compose up -d --build
