@@ -2,11 +2,11 @@ barbershop-app.duckdns.org {
   encode gzip
 
   handle_path /auth/* {
-    reverse_proxy localhost:8080
+    reverse_proxy keycloak:8080
   }
 
   handle_path /api/* {
-    reverse_proxy localhost:8000
+    reverse_proxy api:8000
   }
 
   handle {
@@ -14,3 +14,4 @@ barbershop-app.duckdns.org {
     file_server
   }
 }
+
