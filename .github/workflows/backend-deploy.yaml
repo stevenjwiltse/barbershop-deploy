@@ -11,12 +11,10 @@ jobs:
       - name: Checkout deployment repo
         uses: actions/checkout@v3
 
-      - name: Clone backend repo
+      - name: Clone backend repo into 'api-deploy'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          git clone https://x-access-token:$GH_TOKEN@github.com/stevenjwiltse/api-deploy.git temp-backend
-          mv temp-backend api-deploy
+        run: git clone https://x-access-token:$GH_TOKEN@github.com/stevenjwiltse/api-deploy.git api-deploy
 
       - name: Copy backend repo to EC2
         uses: appleboy/scp-action@v0.1.3
@@ -25,7 +23,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "api-deploy"
-          target: "~/"
+          target: "~/"  # copies it to ~/api-deploy
 
       - name: Run docker-compose on EC2
         uses: appleboy/ssh-action@v1.0.0
@@ -35,5 +33,4 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/api-deploy
-            docker compose down
-            docker compose up -d --build
+            docker
