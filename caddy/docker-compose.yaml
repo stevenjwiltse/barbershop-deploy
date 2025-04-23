@@ -19,4 +19,6 @@ volumes:
 
 networks:
   barber-shop-network:
-    external: true
+    external:
+      name: barber-shop-network
+
