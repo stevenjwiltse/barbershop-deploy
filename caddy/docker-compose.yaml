@@ -10,9 +10,12 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     restart: unless-stopped
+    networks:
+      - barber-shop-network
 
 volumes:
   caddy_data:
   caddy_config:
+
 networks:
-      - barber-shop-network
+  barber-shop-network: {}
