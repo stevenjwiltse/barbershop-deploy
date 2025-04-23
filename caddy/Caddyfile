@@ -1,6 +1,16 @@
 barbershop-app.duckdns.org {
-  root * /srv/frontend-dist
-  file_server
+  encode gzip
 
-  reverse_proxy /api/* 127.0.0.1:8000
+  handle_path /auth/* {
+    reverse_proxy localhost:8080
+  }
+
+  handle_path /api/* {
+    reverse_proxy localhost:8000
+  }
+
+  handle {
+    root * /srv/frontend-dist
+    file_server
+  }
 }
