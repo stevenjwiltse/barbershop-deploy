@@ -28,7 +28,7 @@ jobs:
           mkdir deploy-folder
           cp -r frontend/dist deploy-folder/frontend-dist
           cp caddy/Caddyfile deploy-folder/Caddyfile
-          cp caddy/docker-compose.yml deploy-folder/docker-compose.yml
+          cp caddy/docker-compose.yaml deploy-folder/docker-compose.yaml
 
       - name: Archive deployment files
         run: |
