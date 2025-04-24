@@ -17,3 +17,4 @@ COPY frontend/dist /usr/share/nginx/html
 # Expose HTTP and HTTPS
 EXPOSE 80
 EXPOSE 443
+
