@@ -1,4 +1,4 @@
-barbershop-app.duckdns.org {
+https://barbershop-app.duckdns.org {
   encode gzip
 
   handle_path /auth/* {
