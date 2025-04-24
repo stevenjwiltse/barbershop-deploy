@@ -21,12 +21,12 @@ docker network inspect $NETWORK_NAME >/dev/null 2>&1 || docker network create $N
 echo "Cleaning previous backend..."
 sudo rm -rf "$BACKEND_DIR"
 git clone "$BACKEND_REPO" "$BACKEND_DIR"
-docker compose -f "$BACKEND_DIR/docker-compose.yaml" down -v --remove-orphans || true
+sudo docker compose -f "$BACKEND_DIR/docker-compose.yaml" down -v --remove-orphans || true
 
 echo "Cleaning previous frontend..."
 sudo rm -rf "$FRONTEND_DIR"
 git clone "$FRONTEND_REPO" "$FRONTEND_DIR"
-docker compose -f "$FRONTEND_DIR/docker-compose.yaml" down -v --remove-orphans || true
+sudo docker compose -f "$FRONTEND_DIR/docker-compose.yaml" down -v --remove-orphans || true
 
 echo "Pruning unused Docker images..."
 docker image prune -f
