@@ -19,12 +19,12 @@ echo "Ensuring Docker network exists: $NETWORK_NAME"
 docker network inspect $NETWORK_NAME >/dev/null 2>&1 || docker network create $NETWORK_NAME
 
 echo "Cleaning previous backend..."
-rm -rf "$BACKEND_DIR"
+sudo rm -rf "$BACKEND_DIR"
 git clone "$BACKEND_REPO" "$BACKEND_DIR"
 docker compose -f "$BACKEND_DIR/docker-compose.yaml" down -v --remove-orphans || true
 
 echo "Cleaning previous frontend..."
-rm -rf "$FRONTEND_DIR"
+sudo rm -rf "$FRONTEND_DIR"
 git clone "$FRONTEND_REPO" "$FRONTEND_DIR"
 docker compose -f "$FRONTEND_DIR/docker-compose.yaml" down -v --remove-orphans || true
 

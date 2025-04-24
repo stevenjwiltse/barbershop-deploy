@@ -14,7 +14,7 @@ echo "Removing all custom Docker networks (except default ones)..."
 docker network ls | grep -v "bridge\|host\|none" | awk '{print $1}' | xargs -r docker network rm || true
 
 echo "Deleting old cloned project directories..."
-rm -rf ~/ui-deploy ~/api-deploy ~/frontend-deploy ~/backend ~/frontend ~/deploy-folder
+sudo rm -rf ~/api-deploy ~/ui-deploy ~/frontend-deploy ~/backend ~/frontend ~/deploy-folder
 
 echo "Keeping barbershop-deploy folder intact."
 
