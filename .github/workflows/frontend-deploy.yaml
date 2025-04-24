@@ -1,19 +1,8 @@
-name: Deploy Frontend
-# Frontend
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Run full deploy script
-        run: |
-          bash ~/barbershop-deploy/deploy/deploy-all.sh
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -25,8 +14,8 @@ jobs:
           cd frontend
           npm install
           npm run build
-          mkdir -p deploy-folder/frontend-dist
-          cp -r dist/* deploy-folder/frontend-dist
+          mkdir -p frontend/frontend-dist
+          cp -r dist/* frontend/frontend-dist/
 
       - name: Deploy to EC2
         uses: appleboy/scp-action@v0.1.3
@@ -34,19 +23,14 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "deploy-folder"
-          target: "~/frontend-deploy"
+          source: "frontend"
+          target: "~/ui-deploy"
 
-      - name: SSH into EC2 and Start Frontend
+      - name: SSH into EC2 and Run Full Deploy
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker network inspect barber-shop-network >/dev/null 2>&1 || \
-              docker network create --driver bridge barber-shop-network
-            cd ~/frontend-deploy
-            docker-compose down || true
-            docker-compose up -d --build
-
+            bash ~/barbershop-deploy/deploy/deploy-all.sh
